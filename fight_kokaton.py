@@ -145,6 +145,19 @@ class Beam:
         screen.blit(self.img, self.rct)
 
 
+class Score:
+    def __init__(self):
+        self.font = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
+        self.num = 0
+        self.img = self.font.render(f"スコア：{self.num}", 0, (0, 0, 255))
+        self.rct = self.img.get_rect()
+        self.rct.center = 100, 850
+
+    def update(self, screen: pg.font):
+        self.img = self.font.render(f"スコア：{self.num}", 0, (0, 0, 255))
+        screen.blit(self.img, self.rct)
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -152,6 +165,7 @@ def main():
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for i in range(NUM_OF_BOMBS)]  # BOMBインスタンスがNUM個並んだリスト
     beam = None
+    score = Score()
 
     clock = pg.time.Clock()
     tmr = 0
@@ -176,6 +190,8 @@ def main():
                 beam = None
                 bombs[i] = None
                 bird.change_img(6, screen)
+                Score.num += 1
+        score.update(screen)
         #  Noneでない爆弾だけのリストを作る
         bombs = [bomb for bomb in bombs if bomb is not None]
 
